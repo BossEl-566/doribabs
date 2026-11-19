@@ -105,15 +105,25 @@ export async function saveArticle(
     };
   }
 
-  if (
-    input.cover_image_path &&
-    !IMAGE_PATH_PATTERN.test(input.cover_image_path)
-  ) {
+
+if (input.cover_image_path) {
+  // Only permit images registered in our Media Library.
+  const { data: media, error: mediaError } =
+    await supabase
+      .from("media_assets")
+      .select("id")
+      .eq("storage_path", input.cover_image_path)
+      .maybeSingle();
+
+  if (mediaError || !media) {
     return {
       success: false,
-      message: "Invalid cover image path.",
+      message:
+        "Please select a valid image from the Media Library.",
     };
   }
+}
+
 
   let existingPublishedAt: string | null = null;
 

@@ -137,15 +137,24 @@ export async function saveSchoolEvent(
     };
   }
 
-  if (
-    input.cover_image_path &&
-    !IMAGE_PATTERN.test(input.cover_image_path)
-  ) {
+
+if (input.cover_image_path) {
+  const { data: media, error: mediaError } =
+    await supabase
+      .from("media_assets")
+      .select("id")
+      .eq("storage_path", input.cover_image_path)
+      .maybeSingle();
+
+  if (mediaError || !media) {
     return {
       success: false,
-      message: "Invalid event cover image path.",
+      message:
+        "Please select a valid event cover from the Media Library.",
     };
   }
+}
+
 
   if (input.id && !UUID_PATTERN.test(input.id)) {
     return {

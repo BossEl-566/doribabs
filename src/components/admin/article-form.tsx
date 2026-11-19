@@ -25,6 +25,7 @@ import {
 
 import { createClient } from "@/lib/supabase/client";
 import { saveArticle } from "@/app/admin/(protected)/posts/actions";
+import MediaPicker from "@/components/admin/media-picker";
 
 import {
   EMPTY_ARTICLE,
@@ -78,6 +79,7 @@ export default function ArticleForm({
   const [isFeatured, setIsFeatured] = useState(
     initialArticle?.is_featured ?? false
   );
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
 
   // UI state
   const [isUploading, setIsUploading] = useState(false);
@@ -640,12 +642,33 @@ export default function ArticleForm({
               Feature this article
             </label>
 
+<button
+  type="button"
+  disabled={isBusy}
+  onClick={() => setMediaPickerOpen(true)}
+  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 transition hover:bg-green-100 disabled:opacity-50"
+>
+  <ImagePlus size={18} />
+  Select from Media Library
+</button>
+
+
             <p className="mt-3 text-xs text-slate-400">
               Only published articles will appear publicly.
             </p>
           </section>
         </aside>
       </div>
+
+<MediaPicker
+  open={mediaPickerOpen}
+  onClose={() => setMediaPickerOpen(false)}
+  onSelect={(asset) => {
+    setCoverPath(asset.storage_path);
+    setInfo("Existing image selected successfully.");
+  }}
+/>
+
     </div>
   );
 }
