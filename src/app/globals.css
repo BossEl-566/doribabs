@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-
+@theme inline {
+  --font-sans: var(--font-roboto);
+}
 /* ==========================================
    DORIBABS TIPTAP EDITOR
    ========================================== */
@@ -180,4 +182,37 @@
 .school-richtext code {
   font-family: monospace;
 }
+
+
+/* =========================================
+   DORIBABS GLOBAL ANIMATION REFINEMENTS
+   ========================================= */
+
+/* Smooth anchor navigation where supported */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* School-colour text selection */
+::selection {
+  background-color: #f4a43c;
+  color: #103d2c;
+}
+
+/* Accessible focus indicator */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #f4a43c;
+  outline-offset: 3px;
+}
+
+/* Respect visitors who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 
