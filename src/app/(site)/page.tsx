@@ -15,7 +15,6 @@ import {
   MapPin,
   Newspaper,
   School,
-  Sparkles,
 } from "lucide-react";
 
 import HeroCarousel from "@/components/public/hero-carousel";
@@ -98,17 +97,67 @@ const programmes = [
 ];
 
 // ======================================================
+// LOCAL GALLERY FALLBACK IMAGES
+// ======================================================
+//
+// These images exist in:
+// public/images/
+//
+// They will appear when the Supabase gallery has
+// no published images.
+//
+// If Supabase contains fewer than six images,
+// local images will fill the remaining positions.
+//
+// ======================================================
+
+const fallbackGalleryImages = [
+  {
+    id: "local-computer-lab",
+    src: "/images/computer-lab4.jpeg",
+    alt: "Learners using the Doribabs computer laboratory",
+  },
+  {
+    id: "local-cultural-dance",
+    src: "/images/school-culture-dance3.jpg",
+    alt: "Cultural dance activities at Doribabs School Complex",
+  },
+  {
+    id: "local-school-awards",
+    src: "/images/school-achievement-and-award4.jpg",
+    alt: "School achievements and awards at Doribabs",
+  },
+  {
+    id: "local-student-life",
+    src: "/images/random-students-picture1.jpg",
+    alt: "Learners and school life at Doribabs School Complex",
+  },
+  {
+    id: "local-science-lab",
+    src: "/images/science-lab-section14.jpeg",
+    alt: "Science learning activities at Doribabs",
+  },
+  {
+    id: "local-band",
+    src: "/images/regimental-band3.jpg",
+    alt: "Doribabs School Complex regimental band",
+  },
+];
+
+// ======================================================
 // HOMEPAGE
 // ======================================================
 
 export default async function HomePage() {
-  // Ensure content and event dates are evaluated at
-  // request time rather than during static prerendering.
+  // Evaluate dynamic content at request time.
   await connection();
 
   const now = new Date().toISOString();
 
-  // Fetch published CMS content concurrently.
+  // ====================================================
+  // FETCH CMS CONTENT
+  // ====================================================
+
   const [postsResult, eventsResult, galleryResult] =
     await Promise.all([
       getPublishedPosts({
@@ -123,14 +172,73 @@ export default async function HomePage() {
         featuredFirst: true,
       }),
 
+      // If fetching the gallery fails, return an
+      // empty array so local photos can be displayed.
       getPublicGallery({
         pageSize: 6,
-      }),
+      })
+        .then((result) => result.items)
+        .catch((error: unknown) => {
+          console.error(
+            "Could not load homepage CMS gallery:",
+            error
+          );
+
+          return [];
+        }),
     ]);
 
   const latestPosts = postsResult.items;
+
   const upcomingEvents = eventsResult.items;
-  const galleryImages = galleryResult.items;
+
+  // ====================================================
+  // PREPARE PUBLISHED GALLERY IMAGES
+  // ====================================================
+
+  const publishedGalleryImages = galleryResult.flatMap(
+    (asset) => {
+      const src = asset.storage_path
+        ? getPublicMediaUrl(asset.storage_path)
+        : null;
+
+      // Ignore CMS entries without an image URL.
+      if (!src) {
+        return [];
+      }
+
+      return [
+        {
+          id: `cms-${asset.id}`,
+          src,
+          alt:
+            asset.alt_text?.trim() ||
+            "Doribabs School Complex photograph",
+        },
+      ];
+    }
+  );
+
+  // ====================================================
+  // COMBINE CMS IMAGES WITH LOCAL FALLBACKS
+  // ====================================================
+
+  // Published CMS images take priority.
+  // Local images fill any remaining positions.
+  // The homepage always receives six photographs.
+
+  const galleryImages = [
+    ...publishedGalleryImages,
+
+    ...fallbackGalleryImages.slice(
+      0,
+      Math.max(0, 6 - publishedGalleryImages.length)
+    ),
+  ].slice(0, 6);
+
+  // ====================================================
+  // RENDER HOMEPAGE
+  // ====================================================
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-white">
@@ -532,63 +640,39 @@ export default async function HomePage() {
             </div>
           </Reveal>
 
-          {galleryImages.length > 0 ? (
-            <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-              {galleryImages.map((asset, index) => {
-                const url = getPublicMediaUrl(
-                  asset.storage_path
-                );
+          {/* ============================================
+              GALLERY WITH LOCAL IMAGE FALLBACK
+              ============================================ */}
 
-                if (!url) return null;
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+            {galleryImages.map((photo, index) => (
+              <Reveal
+                key={photo.id}
+                delay={Math.min(index * 0.06, 0.3)}
+              >
+                <Link
+                  href="/gallery"
+                  className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-slate-100 sm:rounded-2xl"
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition duration-700 group-hover:scale-110"
+                  />
 
-                return (
-                  <Reveal
-                    key={asset.id}
-                    delay={Math.min(index * 0.06, 0.3)}
-                  >
-                    <Link
-                      href="/gallery"
-                      className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-slate-100 sm:rounded-2xl"
-                    >
-                      <Image
-                        src={url}
-                        alt={asset.alt_text}
-                        fill
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-cover transition duration-700 group-hover:scale-110"
-                      />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100" />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100" />
-
-                      <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-                        <p className="line-clamp-2 text-xs font-semibold text-white sm:text-sm">
-                          {asset.alt_text}
-                        </p>
-                      </div>
-                    </Link>
-                  </Reveal>
-                );
-              })}
-            </div>
-          ) : (
-            <Reveal>
-              <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-16 text-center">
-                <Images
-                  size={38}
-                  className="mx-auto text-green-700"
-                />
-
-                <h3 className="mt-5 text-lg font-bold text-slate-900">
-                  Our gallery is being prepared
-                </h3>
-
-                <p className="mt-3 text-sm text-slate-500">
-                  Published school photographs will
-                  appear here.
-                </p>
-              </div>
-            </Reveal>
-          )}
+                  <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                    <p className="line-clamp-2 text-xs font-semibold text-white sm:text-sm">
+                      {photo.alt}
+                    </p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
 
           <Reveal>
             <div className="mt-10 text-center">
@@ -609,8 +693,9 @@ export default async function HomePage() {
           ================================================== */}
 
       <section className="relative isolate overflow-hidden bg-[#103D2C] px-5 py-20 text-white sm:px-8 lg:py-28">
-        {/* Decorative background */}
+
         <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#F4A43C]/10 blur-3xl" />
+
         <div className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-green-400/10 blur-3xl" />
 
         <div className="relative mx-auto max-w-5xl text-center">

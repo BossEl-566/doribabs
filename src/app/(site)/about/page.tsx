@@ -16,6 +16,7 @@ import {
   Heart,
   Lightbulb,
   MapPin,
+  Quote,
   School,
   ShieldCheck,
   Sparkles,
@@ -32,7 +33,7 @@ import Reveal from "@/components/animation/Reveal";
 export const metadata: Metadata = {
   title: "About Us | Doribabs School Complex",
   description:
-    "Learn about Doribabs School Complex, founded by Madam Doris Baaba Simpson in 2009. Discover our history, mission, vision, values and commitment to holistic education.",
+    "Learn about Doribabs School Complex, founded by Mrs. Doris Baaba Simpson Aikins in 2009. Discover our history, mission, vision, values and commitment to holistic education.",
   openGraph: {
     title: "About Doribabs School Complex",
     description:
@@ -174,6 +175,146 @@ const timeline = [
 ];
 
 // ======================================================
+// SCHOOL LEADERSHIP & OFFICIAL MESSAGES
+// The Headteacher's portrait has not been identified
+// in the supplied image list; initials are shown until
+// a confirmed photograph is provided.
+// ======================================================
+
+type LeadershipProfile = {
+  id: string;
+  name: string;
+  role: string;
+  eyebrow: string;
+  heading: string;
+  photo?: string;
+  initials: string;
+  subtitle?: string;
+  paragraphs: string[];
+  principles?: string[];
+  highlights?: string[];
+  closing?: string;
+  motto?: string;
+};
+
+const leadershipProfiles: LeadershipProfile[] = [
+  {
+    id: "headteacher",
+    name: "Mr. Jonathan Kwame Kwakye",
+    role: "Headteacher",
+    eyebrow: "A Welcome Message From the Headteacher",
+    heading: "Akwaaba! Welcome to Doribabs",
+    initials: "JK",
+    paragraphs: [
+      "Akwaaba! You are warmly welcome to Doribabs School Complex, Moree Junction, near Cape Coast.",
+      "At Doribabs, we are more than a school; we are a family committed to nurturing the total child through quality education, strong Christian values, discipline, and love.",
+      "From Creche, Nursery and Kindergarten to Primary and Junior High School, we provide a safe, supportive, and stimulating environment where every child is encouraged to discover their talents, develop their potential, and achieve academic excellence.",
+      "Our dedicated teachers combine effective teaching, practical learning, and Godly training to develop confident, disciplined, and well-rounded learners prepared for future success.",
+      "We remain guided by our principles:",
+      "To our prospective parents, we invite you to experience the Doribabs difference. To our continuing parents, thank you for your trust and partnership.",
+      "You are warmly welcome to Doribabs School Complex!",
+    ],
+    principles: [
+      "Doribabs – Seeing Is Believing!",
+      "Doribabs – Trust and Obey!",
+      "Doribabs – We Originate, They Imitate!",
+    ],
+    closing: "Yours faithfully,",
+  },
+  {
+    id: "founder",
+    name: "Mrs. Doris Baaba Simpson Aikins",
+    role: "Founder",
+    eyebrow: "A Message From the Founder",
+    heading: "A Vision Rooted in Every Child's Potential",
+    photo: "/images/founder.jpg",
+    initials: "DS",
+    paragraphs: [
+      "It is my great pleasure to welcome you to Doribabs School Complex, an institution established out of a passion for quality education and a desire to nurture the potential in every child.",
+      "Since our establishment in 2009, our vision has been to provide holistic, affordable, and quality education rooted in Christian values, discipline, and academic excellence. Our journey has been guided by the belief that every child has unique abilities and deserves the opportunity to learn, grow, and succeed.",
+      "As we continue to grow, we remain committed to shaping responsible, God-fearing, disciplined, and accomplished individuals who will positively impact society.",
+      "I invite you to be part of our journey as we continue to inspire, transform lives, and nurture future leaders.",
+    ],
+    motto: "Doribabs School Complex – Seeing Is Believing!",
+  },
+  {
+    id: "proprietress",
+    name: "Mrs. Roberta Sackey",
+    role: "Proprietress",
+    eyebrow: "A Message From the Proprietress",
+    heading: "Every Child Valued, Encouraged and Empowered",
+    photo: "/images/roberta-sackey.jpg",
+    initials: "RS",
+    paragraphs: [
+      "Welcome to Doribabs School Complex!",
+      "At Doribabs, we are committed to providing a friendly, supportive, and stimulating learning environment where every child is valued, encouraged, and empowered to achieve their full potential.",
+      "Our dedicated team of professional teachers and staff works collaboratively to promote academic excellence, moral discipline, Christian values, creativity, and the holistic development of our learners.",
+      "We recognise the importance of strong partnerships between the school and parents in shaping the future of every child. We therefore look forward to working together with you to provide the guidance, support, and quality education our children deserve.",
+      "Thank you for trusting Doribabs School Complex to be part of your child's educational journey. Together, let us build a foundation for a brighter future.",
+    ],
+    motto: "Doribabs School Complex – Seeing Is Believing!",
+  },
+  {
+    id: "board-chair",
+    name: "Mr. Frederick Badu-Mensah",
+    role: "Board Chair",
+    eyebrow: "Meet the Board Chair",
+    heading: "Experience, Leadership and Service to Education",
+    photo: "/images/frederick-badu.jpg",
+    initials: "FB",
+    subtitle: "Regional Human Resource Officer, Ghana Education Service (GES), Central Region, Cape Coast",
+    paragraphs: [
+      "Mr. Frederick Badu-Mensah is the Regional Human Resource Officer of the Ghana Education Service, Central Region, Cape Coast, with 29 years of dedicated service to education.",
+      "He began as a classroom teacher and was named Best Teacher in the Central Region (JHS category). He rose to headteacher, then served at the district level as Circuit Supervisor, Training Officer, Private School Coordinator and District Human Resource Officer before his appointment to the regional office.",
+      "He holds a Master's degree in Human Resource Management and is a certified mediator, skills he applies to staff welfare, conflict resolution and workforce development.",
+      "Educated in Cape Coast and the wider Central Region, he combines classroom experience with professional expertise in human resource management.",
+    ],
+    highlights: [
+      "29 years of service to education",
+      "Central Region Best Teacher (JHS category)",
+      "Master's degree in Human Resource Management",
+      "Certified mediator",
+    ],
+  },
+];
+
+function LeadershipPortrait({
+  person,
+  compact = false,
+}: {
+  person: LeadershipProfile;
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden bg-[#E4F0E8] ${
+        compact ? "aspect-[4/4]" : "aspect-[4/4.7] rounded-[2rem] shadow-xl"
+      }`}
+    >
+      {person.photo ? (
+        <Image
+          src={person.photo}
+          alt={`Portrait of ${person.name}, ${person.role} of Doribabs School Complex`}
+          fill
+          sizes={compact ? "(max-width: 640px) 50vw, 25vw" : "(max-width: 1024px) 100vw, 480px"}
+          className="object-cover object-top"
+        />
+      ) : (
+        <div className="flex h-full flex-col items-center justify-center bg-gradient-to-br from-[#176B49] to-[#103D2C] p-6 text-white">
+          <span className="flex h-24 w-24 items-center justify-center rounded-full border border-white/25 bg-white/15 text-4xl font-black">
+            {person.initials}
+          </span>
+          <p className="mt-5 text-center text-sm font-bold">{person.name}</p>
+          {!compact && (
+            <p className="mt-2 text-center text-xs text-white/70">Portrait to be added</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ======================================================
 // ABOUT PAGE
 // ======================================================
 
@@ -271,7 +412,7 @@ export default function AboutPage() {
               </p>
 
               <p className="mt-5 text-sm leading-8 text-white/80">
-                Founded by Madam Doris Baaba Simpson
+                Founded by Mrs. Doris Baaba Simpson Aikins
                 with a vision to provide quality,
                 flexible and affordable holistic education.
               </p>
@@ -565,94 +706,183 @@ export default function AboutPage() {
       </section>
 
       {/* ==================================================
-          SECTION 5: OUR FOUNDER
+          SECTION 5: OUR SCHOOL LEADERSHIP
+          Full welcome messages and Board Chair profile.
           ================================================== */}
 
-      <section className="overflow-hidden bg-[#F6F9F6] px-5 py-20 sm:px-8 lg:py-28">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <section
+        id="leadership"
+        className="scroll-mt-28 bg-[#F6F9F6] px-5 py-20 sm:px-8 lg:py-28"
+      >
+        <div className="mx-auto max-w-7xl">
           <Reveal>
-            <div>
+            <div className="mx-auto max-w-3xl text-center">
               <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-orange-600">
-                <span className="h-0.5 w-8 bg-orange-500" />
-                Leadership & Legacy
+                <Users size={18} />
+                The People Behind Our Vision
               </span>
-
-              <h2 className="mt-6 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">
-                Meet Our
-                <span className="mt-2 block text-[#176B49]">
-                  Founder
-                </span>
+              <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
+                Meet Our <span className="text-[#176B49]">Leadership</span>
               </h2>
-
-              <h3 className="mt-7 text-2xl font-extrabold text-slate-900">
-                Madam Doris Baaba Simpson
-              </h3>
-
-              <p className="mt-2 text-sm font-bold uppercase tracking-wide text-orange-700">
-                Founder & Proprietress
+              <p className="mt-5 text-sm leading-8 text-slate-600 sm:text-base">
+                Meet the individuals helping guide Doribabs School Complex
+                through educational leadership, Christian values, professional
+                service and a shared commitment to every learner.
               </p>
-
-              <div className="mt-7 space-y-5 text-sm leading-8 text-slate-600 sm:text-base">
-                <p>
-                  Doribabs School Complex was established
-                  through the vision of Madam Doris Baaba
-                  Simpson, who sought to contribute to
-                  national development by improving access
-                  to quality holistic basic education.
-                </p>
-
-                <p>
-                  Having previously overseen premises
-                  used as a girls&apos; hostel, she recognised
-                  an opportunity to transform that
-                  educational environment into a basic
-                  school serving young learners.
-                </p>
-
-                <p>
-                  Her founding vision places emphasis
-                  on discipline, Christian values,
-                  academic achievement and the discovery
-                  of each learner&apos;s potential.
-                </p>
-              </div>
-
-              <div className="mt-9 rounded-2xl border-l-4 border-[#F4A43C] bg-white px-6 py-5">
-                <p className="text-sm font-semibold leading-7 text-slate-700">
-                  A founding commitment to quality,
-                  affordable and holistic education
-                  continues to guide the school today.
-                </p>
-              </div>
             </div>
           </Reveal>
 
-          {/* Founder portrait */}
-          <Reveal delay={0.1}>
-            <div className="relative pb-9">
-              <div className="relative aspect-[4/4.7] overflow-hidden rounded-[2rem] bg-green-100 shadow-xl">
-                <Image
-                  src="/images/founder.jpg"
-                  alt="Madam Doris Baaba Simpson, Founder and Proprietress of Doribabs School Complex"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-center"
-                />
-              </div>
-
-              <div className="absolute -bottom-1 left-4 right-4 rounded-2xl bg-[#176B49] p-6 text-white shadow-xl sm:left-8 sm:right-8">
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#FFCA75]">
-                  Founder & Proprietress
-                </p>
-
-                <p className="mt-2 text-xl font-extrabold">
-                  Madam Doris Baaba Simpson
-                </p>
-              </div>
-            </div>
-          </Reveal>
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {leadershipProfiles.map((person, index) => (
+              <Reveal key={person.id} delay={Math.min(index * 0.07, 0.21)}>
+                <Link
+                  href={`#${person.id}`}
+                  className="group block overflow-hidden rounded-2xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#176B49]"
+                >
+                  <LeadershipPortrait person={person} compact />
+                  <div className="p-5">
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-orange-600">
+                      {person.role}
+                    </p>
+                    <h3 className="mt-2 text-lg font-extrabold leading-snug text-slate-950 group-hover:text-[#176B49]">
+                      {person.name}
+                    </h3>
+                    <span className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-[#176B49]">
+                      {person.id === "board-chair" ? "Read Profile" : "Read Message"}
+                      <ArrowUpRight size={16} />
+                    </span>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
+
+      {leadershipProfiles.map((person, index) => (
+        <section
+          key={person.id}
+          id={person.id}
+          aria-labelledby={`${person.id}-heading`}
+          className={`scroll-mt-28 px-5 py-20 sm:px-8 lg:py-28 ${
+            index % 2 === 0 ? "bg-white" : "bg-[#F6F9F6]"
+          }`}
+        >
+          <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
+            <Reveal className={index % 2 === 1 ? "lg:order-2" : ""}>
+              <div className="mx-auto max-w-[480px]">
+                <LeadershipPortrait person={person} />
+                <div className="relative -mt-6 mx-5 rounded-2xl bg-[#103D2C] p-6 text-white shadow-xl sm:mx-8">
+                  <p className="text-xl font-extrabold">{person.name}</p>
+                  <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-[#FFCA75]">
+                    {person.role}
+                  </p>
+                  {person.subtitle && (
+                    <p className="mt-3 text-xs leading-6 text-white/75">
+                      {person.subtitle}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal
+              delay={0.1}
+              className={index % 2 === 1 ? "lg:order-1" : ""}
+            >
+              <article className="max-w-3xl">
+                <div className="flex items-center gap-3 text-xs font-extrabold uppercase tracking-[0.17em] text-orange-600">
+                  <span className="h-0.5 w-8 bg-[#F4A43C]" />
+                  {person.eyebrow}
+                </div>
+                <h2
+                  id={`${person.id}-heading`}
+                  className="mt-6 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl"
+                >
+                  {person.heading}
+                </h2>
+
+                <div className="mt-6 flex items-center gap-3 text-[#176B49]">
+                  {person.id === "board-chair" ? (
+                    <Award size={25} />
+                  ) : (
+                    <Quote size={25} />
+                  )}
+                  <span className="text-sm font-extrabold">
+                    {person.id === "board-chair"
+                      ? "Professional Profile"
+                      : `${person.role}'s Message`}
+                  </span>
+                </div>
+
+                <div className="mt-7 space-y-5">
+                  {person.paragraphs.map((paragraph, paragraphIndex) => (
+                    <div key={paragraphIndex}>
+                      <p className="text-sm leading-8 text-slate-600 sm:text-base">
+                        {paragraph}
+                      </p>
+                      {person.principles && paragraphIndex === 4 && (
+                        <div className="mt-5 rounded-2xl border-l-4 border-[#F4A43C] bg-[#EAF5EE] p-6 sm:p-7">
+                          <p className="mb-4 text-xs font-extrabold uppercase tracking-[0.15em] text-[#176B49]">
+                            Our Guiding Principles
+                          </p>
+                          <div className="space-y-3">
+                            {person.principles.map((principle) => (
+                              <p key={principle} className="text-sm font-extrabold leading-7 text-[#103D2C]">
+                                {principle}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {person.highlights && (
+                  <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                    {person.highlights.map((item) => (
+                      <div
+                        key={item}
+                        className="flex items-start gap-3 rounded-xl border border-green-100 bg-white p-4"
+                      >
+                        <CheckCircle2 size={19} className="mt-0.5 shrink-0 text-[#176B49]" />
+                        <p className="text-sm font-semibold leading-6 text-slate-700">
+                          {item}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-9 border-t border-slate-200 pt-6">
+                  {person.closing && (
+                    <p className="mb-4 text-sm italic text-slate-600">
+                      {person.closing}
+                    </p>
+                  )}
+                  {person.motto && (
+                    <p className="mb-5 text-sm font-extrabold italic text-[#176B49]">
+                      {person.motto}
+                    </p>
+                  )}
+                  <p className="text-lg font-extrabold text-slate-950">
+                    {person.name}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-[#176B49]">
+                    {person.role}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {person.id === "board-chair"
+                      ? "Doribabs School Complex Board"
+                      : "Doribabs School Complex"}
+                  </p>
+                </div>
+              </article>
+            </Reveal>
+          </div>
+        </section>
+      ))}
 
       {/* ==================================================
           SECTION 6: CORE VALUES
