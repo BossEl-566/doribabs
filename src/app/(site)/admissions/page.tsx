@@ -1196,7 +1196,6 @@ export default function AdmissionsPage() {
             <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
               <div>
                 <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-orange-600">
-                  <Sparkles size={18} />
                   Discover Doribabs
                 </span>
 
