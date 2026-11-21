@@ -688,10 +688,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ==================================================
-          SECTION 8: ADMISSIONS CALL TO ACTION
-          ================================================== */}
-
       <section className="relative isolate overflow-hidden bg-[#103D2C] px-5 py-20 text-white sm:px-8 lg:py-28">
 
         <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#F4A43C]/10 blur-3xl" />
